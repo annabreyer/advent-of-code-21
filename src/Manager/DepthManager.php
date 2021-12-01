@@ -36,4 +36,19 @@ class DepthManager
     {
         return $previousDepth < $currentDepth;
     }
+
+    public function aggregateMeasurementsInSlidingWindow(array $measurements): array
+    {
+        $aggregatedData = [];
+
+        while (\count($measurements) > 0) {
+            $window           = \array_slice($measurements, 0, 3);
+            $windowData       = \array_sum($window);
+            $aggregatedData[] = $windowData;
+            unset($measurements[0]);
+            $measurements = \array_values($measurements);
+        }
+
+        return $aggregatedData;
+    }
 }

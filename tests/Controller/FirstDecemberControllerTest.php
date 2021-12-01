@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace App\Tests\Controller;
 
+use App\Helper\MessageHelper;
 use Liip\FunctionalTestBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -18,9 +19,7 @@ class FirstDecemberControllerTest extends WebTestCase
         /** @var Response $response */
         $response = $client->getResponse();
         $content  = $response->getContent();
-        $number   = (int) $content;
 
-        $this->assertIsInt($number);
-        $this->assertEquals(1665, $number);
+        $this->assertEquals(MessageHelper::getResultMessage('1665', '1702'), $content);
     }
 }

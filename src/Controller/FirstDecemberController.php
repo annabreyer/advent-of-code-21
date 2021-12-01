@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace App\Controller;
 
+use App\Helper\MessageHelper;
 use App\Manager\DepthManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -27,7 +28,10 @@ class FirstDecemberController extends AbstractController
         $data              = $this->getDepths();
         $numberOfIncreases = $this->depthManager->countNumberOfIncreases($data);
 
-        return new Response((string) $numberOfIncreases);
+        $aggregatedData     = $this->depthManager->aggregateMeasurementsInSlidingWindow($data);
+        $aggregatedIncrease = $this->depthManager->countNumberOfIncreases($aggregatedData);
+
+        return new Response(MessageHelper::getResultMessage((string) $numberOfIncreases, (string) $aggregatedIncrease));
     }
 
     private function getDepths(): array
