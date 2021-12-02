@@ -5,14 +5,15 @@ declare(strict_types = 1);
 namespace App\Tests\Manager;
 
 use App\Manager\NavigationManager;
+use App\Objects\Navigation;
 use PHPUnit\Framework\TestCase;
 
 class NavigationManagerTest extends TestCase
 {
     public function testGetNavigationType(): void
     {
-        $data               = 'forward 5';
-        $navigationManager  = new NavigationManager();
+        $data              = 'forward 5';
+        $navigationManager = new NavigationManager();
 
         $type = $navigationManager->getMovementType($data);
         $this->assertEquals(NavigationManager::FORWARD, $type);
@@ -28,43 +29,43 @@ class NavigationManagerTest extends TestCase
             'down 8',
             'forward 2',
         ];
-        $navigationManager  = new NavigationManager();
-        $horizontalPosition = 0;
-        $depth              = 0;
 
-        $navigationManager->navigate($horizontalPosition, $depth, $data);
+        $navigationManager = new NavigationManager();
+        $navigation        = new Navigation(0, 0, 0);
 
-        $this->assertEquals(15, $horizontalPosition);
-        $this->assertEquals(10, $depth);
+        $navigationManager->navigate($navigation, $data);
+
+        $this->assertEquals(15, $navigation->getHorizontalPosition());
+        $this->assertEquals(60, $navigation->getDepth());
     }
 
     public function testForward(): void
     {
-        $navigationManager  = new NavigationManager();
-        $horizontalPosition = 0;
-        $movement           = 3;
+        $navigationManager = new NavigationManager();
+        $navigation        = new Navigation(0, 0, 0);
+        $movement          = 3;
 
-        $newPosition = $navigationManager->forward($horizontalPosition, $movement);
-        $this->assertEquals(3, $newPosition);
+        $navigationManager->forward($navigation, $movement);
+        $this->assertEquals(3, $navigation->getHorizontalPosition());
     }
 
     public function testDown(): void
     {
         $navigationManager = new NavigationManager();
-        $depth             = 0;
+        $navigation        = new Navigation(0, 0, 0);
         $movement          = 3;
 
-        $newDepth= $navigationManager->down($depth, $movement);
-        $this->assertEquals(3, $newDepth);
+        $navigationManager->down($navigation, $movement);
+        $this->assertEquals(3, $navigation->getAim());
     }
 
     public function testUp(): void
     {
         $navigationManager = new NavigationManager();
-        $depth             = 5;
+        $navigation        = new Navigation(5, 0, 0);
         $movement          = 3;
 
-        $newDepth = $navigationManager->up($depth, $movement);
-        $this->assertEquals(2, $newDepth);
+        $navigationManager->up($navigation, $movement);
+        $this->assertEquals(2, $navigation->getAim());
     }
 }

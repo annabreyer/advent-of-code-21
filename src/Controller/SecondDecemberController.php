@@ -4,8 +4,8 @@ declare(strict_types = 1);
 
 namespace App\Controller;
 
-use App\Helper\MessageHelper;
 use App\Manager\NavigationManager;
+use App\Objects\Navigation;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -15,9 +15,9 @@ class SecondDecemberController extends AbstractController
     /** @var NavigationManager */
     private $navigationManager;
 
-    public function __construct(NavigationManager $navigationManager)
+    public function __construct()
     {
-        $this->navigationManager = $navigationManager;
+        $this->navigationManager = new NavigationManager(0, 0, 0);
     }
 
     /**
@@ -25,18 +25,17 @@ class SecondDecemberController extends AbstractController
      */
     public function getLocationFromPlottedCourse(): Response
     {
-        $data               = $this->getData();
-        $horizontalPosition = 0;
-        $depth              = 0;
+        $data       = $this->getData();
+        $navigation = new Navigation(0, 0, 0);
 
-        $this->navigationManager->navigate($horizontalPosition, $depth, $data);
+        $this->navigationManager->navigate($navigation, $data);
 
-        $globalPosition = $horizontalPosition * $depth;
+        $globalPosition = $navigation->getHorizontalPosition() * $navigation->getDepth();
 
-        return new Response(MessageHelper::getResultMessage((string) $globalPosition, (string) 0));
+        return new Response((string) $globalPosition);
     }
 
-    private function getData()
+    private function getData(): array
     {
         return [
             'forward 8',

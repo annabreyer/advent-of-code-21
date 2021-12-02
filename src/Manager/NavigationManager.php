@@ -4,6 +4,8 @@ declare(strict_types = 1);
 
 namespace App\Manager;
 
+use App\Objects\Navigation;
+
 class NavigationManager
 {
     public const FORWARD = 'forward';
@@ -12,7 +14,7 @@ class NavigationManager
 
     public const DOWN    = 'down';
 
-    public function navigate(int &$horizontalPosition, int &$depth, array $navigationData): void
+    public function navigate(Navigation $navigation, array $navigationData): void
     {
         foreach ($navigationData as $data) {
             $movement = (int) \filter_var($data, FILTER_SANITIZE_NUMBER_INT);
@@ -20,15 +22,15 @@ class NavigationManager
 
             switch ($type) {
                 case self::FORWARD:
-                    $horizontalPosition = $this->forward($horizontalPosition, $movement);
+                    $this->forward($navigation, $movement);
 
                 break;
                 case self::UP:
-                    $depth = $this->up($depth, $movement);
+                    $this->up($navigation, $movement);
 
                 break;
                 case self::DOWN:
-                    $depth = $this->down($depth, $movement);
+                    $this->down($navigation, $movement);
 
                 break;
             }
@@ -52,18 +54,19 @@ class NavigationManager
         return '';
     }
 
-    public function forward(int $horizontalPosition, int $movement): int
+    public function forward(Navigation $navigation, int $movement): void
     {
-        return $horizontalPosition + $movement;
+        $navigation->increaseHorizontalPositionBy($movement);
+        $navigation->increaseDepthBy($navigation->getAim() * $movement);
     }
 
-    public function down(int $depth, int $movement): int
+    public function down(Navigation $navigation, int $movement): void
     {
-        return $depth + $movement;
+        $navigation->increaseAimBy($movement);
     }
 
-    public function up(int $depth, int $movement): int
+    public function up(Navigation $navigation, int $movement): void
     {
-        return $depth - $movement;
+        $navigation->decreaseAimBy($movement);
     }
 }
