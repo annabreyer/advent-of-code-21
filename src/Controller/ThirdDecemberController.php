@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace App\Controller;
 
+use App\Manager\LifeSupportManager;
 use App\Manager\PowerManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -11,22 +12,26 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class ThirdDecemberController extends AbstractController
 {
-    private PowerManager $powerManager;
-
-    public function __construct(PowerManager $powerManager)
+    /**
+     * @Route("/december/3/power", name="december-3-power", methods={"GET"})
+     */
+    public function getPowerConsumption(PowerManager $powerManager): Response
     {
-        $this->powerManager = $powerManager;
+        $data             = $this->getData();
+        $powerConsumption = $powerManager->getPowerConsumption($data);
+
+        return new Response((string) $powerConsumption);
     }
 
     /**
-     * @Route("/december/3", name="december-3", methods={"GET"})
+     * @Route("/december/3/lifesupport", name="december-3-lifesupport", methods={"GET"})
      */
-    public function getPowerConsumption()
+    public function getLifeSupportRating(LifeSupportManager $lifeSupportManager): Response
     {
         $data             = $this->getData();
-        $powerConsumption = $this->powerManager->getPowerConsumption($data);
+        $lifeSupportRating = $lifeSupportManager->getLifeSupportRating($data);
 
-        return new Response((string) $powerConsumption);
+        return new Response((string) $lifeSupportRating);
     }
 
     private function getData()
