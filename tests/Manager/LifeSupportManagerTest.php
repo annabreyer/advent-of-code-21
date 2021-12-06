@@ -1,4 +1,6 @@
-<?php declare(strict_types = 1);
+<?php
+
+declare(strict_types = 1);
 
 namespace App\Tests\Manager;
 
@@ -7,7 +9,7 @@ use PHPUnit\Framework\TestCase;
 
 class LifeSupportManagerTest extends TestCase
 {
-    const INPUT = [
+    public const INPUT = [
         '00100',
         '11110',
         '10110',
@@ -22,29 +24,27 @@ class LifeSupportManagerTest extends TestCase
         '01010',
     ];
 
-    public function testGetOxygenRating()
+    public function testGetOxygenRating(): void
     {
         $lifeSupportManager = new LifeSupportManager();
-        $data = $lifeSupportManager->getOxygenRating(self::INPUT);
+        $data               = $lifeSupportManager->getOxygenRating(self::INPUT);
 
         $this->assertEquals('10111', $data);
     }
 
-    public function testGetCo2Rating()
+    public function testGetCo2Rating(): void
     {
         $lifeSupportManager = new LifeSupportManager();
-        $data = $lifeSupportManager->getCo2Rating(self::INPUT);
+        $data               = $lifeSupportManager->getCo2Rating(self::INPUT);
 
         $this->assertEquals('01010', $data);
     }
 
-    public function testGetLifeSupportRating()
+    public function testGetLifeSupportRating(): void
     {
         $lifeSupportManager = new LifeSupportManager();
-        $data = $lifeSupportManager->getLifeSupportRating(self::INPUT);
+        $data               = $lifeSupportManager->getLifeSupportRating(self::INPUT);
 
         $this->assertEquals(230, $data);
-
     }
-
 }

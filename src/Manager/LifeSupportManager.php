@@ -1,4 +1,6 @@
-<?php declare(strict_types = 1);
+<?php
+
+declare(strict_types = 1);
 
 namespace App\Manager;
 
@@ -7,15 +9,15 @@ class LifeSupportManager
     public function getLifeSupportRating(array $input): int
     {
         $oxygenRating = $this->getOxygenRating($input);
-        $co2Rating = $this->getCo2Rating($input);
+        $co2Rating    = $this->getCo2Rating($input);
 
-        return bindec($oxygenRating) * bindec($co2Rating);
+        return \bindec($oxygenRating) * \bindec($co2Rating);
     }
 
     public function getOxygenRating(array $input): string
     {
         $loopCount = 0;
-        while (count($input) > 1) {
+        while (\count($input) > 1) {
             $oxygenFilter = $this->getOxygenFilter($input, $loopCount);
 
             foreach ($input as $key => $binaryString) {
@@ -27,13 +29,13 @@ class LifeSupportManager
             $loopCount++;
         }
 
-        return array_values($input)[0];
+        return \array_values($input)[0];
     }
 
     public function getCo2Rating(array $input): string
     {
         $loopCount = 0;
-        while (count($input) > 1) {
+        while (\count($input) > 1) {
             $co2Filter = $this->getCo2Filter($input, $loopCount);
 
             foreach ($input as $key => $binaryString) {
@@ -45,7 +47,7 @@ class LifeSupportManager
             $loopCount++;
         }
 
-        return array_values($input)[0];
+        return \array_values($input)[0];
     }
 
     private function getOxygenFilter(array $input, $offset): string
@@ -83,5 +85,4 @@ class LifeSupportManager
 
         return $countOne >= $countZero ? '0' : '1';
     }
-
 }

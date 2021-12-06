@@ -28,7 +28,7 @@ class ThirdDecemberController extends AbstractController
      */
     public function getLifeSupportRating(LifeSupportManager $lifeSupportManager): Response
     {
-        $data             = $this->getData();
+        $data              = $this->getData();
         $lifeSupportRating = $lifeSupportManager->getLifeSupportRating($data);
 
         return new Response((string) $lifeSupportRating);
