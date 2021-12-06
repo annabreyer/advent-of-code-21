@@ -17,7 +17,7 @@ class SecondDecemberController extends AbstractController
 
     public function __construct()
     {
-        $this->navigationManager = new NavigationManager(0, 0, 0);
+        $this->navigationManager = new NavigationManager();
     }
 
     /**
