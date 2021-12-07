@@ -15,17 +15,12 @@ class FourthDecemberController extends AbstractController
     /**
      * @Route("/december/4", name="december-4", methods={"GET"})
      */
-    public function getLocationFromPlottedCourse(): Response
+    public function getLastWinningGridScore(): Response
     {
-        $score = 0;
-
         $bingoManager = new BingoManager($this->getBoardsFromFile(), $this->getNumbers());
 
-        //$bingoManager = new BingoManager($this->getBoards(), $this->getNumbers());
-        $bingo = $bingoManager->drawNumbersUntilBingo();
-        if ($bingo) {
-            $score = $bingoManager->getScore();
-        }
+        $bingoManager->drawNumbersUntilBingo(false);
+        $score = $bingoManager->getScore();
 
         return new Response((string) $score);
     }
@@ -71,7 +66,6 @@ class FourthDecemberController extends AbstractController
 
                 $bingoGrids[$gridNumber][] = \array_values($row);
             }
-//            dump($bingoGrids[$gridNumber]);die;
 
             $gridNumber++;
         }

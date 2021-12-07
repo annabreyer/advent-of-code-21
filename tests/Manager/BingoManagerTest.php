@@ -94,9 +94,12 @@ class BingoManagerTest extends TestCase
     public function testDrawNumbersUntilBingo(): void
     {
         $bingoManager = new BingoManager(self::GRIDS, self::RANDOM_NUMBERS);
-        $bingo        = $bingoManager->drawNumbersUntilBingo();
+        $bingo        = $bingoManager->drawNumbersUntilBingo(true);
         $this->assertTrue($bingo);
         $this->assertEquals(4512, $bingoManager->getScore());
+
+        $bingoManager->drawNumbersUntilBingo(false);
+        $this->assertEquals(1924, $bingoManager->getScore());
     }
 
     public function testSetScoreFromColumn(): void

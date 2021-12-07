@@ -19,7 +19,7 @@ class BingoManager
         $this->score   = 0;
     }
 
-    public function drawNumbersUntilBingo(): bool
+    public function drawNumbersUntilBingo(bool $findFirstBingo): bool
     {
         foreach ($this->numbers as $number) {
             $number = (int) $number;
@@ -29,7 +29,11 @@ class BingoManager
                 $this->grids[$key] = $grid;
 
                 if ($bingo) {
-                    return true;
+                    unset($this->grids[$key]);
+
+                    if ($findFirstBingo) {
+                        return true;
+                    }
                 }
             }
         }
@@ -91,7 +95,7 @@ class BingoManager
         return $this->score;
     }
 
-    public function checkForBingoRow(array $grid)
+    public function checkForBingoRow(array $grid): bool
     {
         foreach ($grid as $row) {
             $numbers = \implode('', \array_values($row));
@@ -103,7 +107,7 @@ class BingoManager
         return false;
     }
 
-    public function checkForBingoColumn(array $grid)
+    public function checkForBingoColumn(array $grid): bool
     {
         $columnCount = \count($grid[0]) - 1;
         while ($columnCount >= 0) {
